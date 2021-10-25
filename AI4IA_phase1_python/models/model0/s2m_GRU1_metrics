@@ -1,0 +1,13 @@
+affiliation : SKF Group
+description : This is a simple GRU model that supports 1 input and 1 to 5 outputs
+email : francois.caire@skf.com
+model_name : GRU1
+other_remarks : 
+team_name : s2m
+technology_stack : pytorch
+Average inference time [seconds] : 0.0007976224422454834
+Entire series inference time [seconds] : 0.7976224422454834
+Maximal inference time [seconds] : 0.002095460891723633
+Normalized MSE : [1.37938037 3.43960069 1.65857653 2.11001037 2.47360846]
+Normalized MSE Sum : 11.061176406956992
+Training time [seconds] : 3.8038721084594727
