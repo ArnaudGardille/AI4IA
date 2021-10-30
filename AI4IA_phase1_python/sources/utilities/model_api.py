@@ -80,8 +80,8 @@ class ModelApi:
 
     def fit(self, xs: List[np.ndarray], ys: List[np.ndarray], timeout=36000):
         """ train on several (x, y) examples
-        :param xs: input data given as a list of series. Each series is a 2D ndarray with rows representing samples, and columns represening features.
-        :param ys: labels (could be multi-label) for each given series. Each labels series is a 2D ndarray with rows representing samples, and columns represening output labels.
+        :param xs: input data given as a list containing one dimensionnal array corresponding to input samples
+        :param ys: output data given as a list of one dimensionnal arrays corresponding to output samples
         :param timeout: maximal time (on the hosting machine) allowed for this operation (in seconds).
         """
 

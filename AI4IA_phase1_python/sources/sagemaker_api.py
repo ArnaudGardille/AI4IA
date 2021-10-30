@@ -8,9 +8,14 @@ import numpy as np
 # from magnetic_bearing.hackathon.example_mock_model_submission.my_model import MyModel
 # from magnetic_bearing.hackathon.example_gru_model_submission.my_model import MyModel
 try:
+    from utility_functions import load_data_csv
+except:pass
+try:
     from utilities.utility_functions import load_data_csv
-except:
+except:pass
+try:
     from sources.utilities.utility_functions import load_data_csv
+except:pass
 
 def save_hyper(hyper_rep,hyper_file,args):
     os.makedirs(hyper_rep,exist_ok=True)
@@ -50,19 +55,20 @@ if __name__ == '__main__':
     parser.add_argument('--model_def_file', type=str, default='my_model1')
     parser.add_argument('--epochs', type=int, default=2)
     parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--outputs_indexes',help='list of outputs indexes separated by space (default: \"1 2 3 4 5\")', type=str, default="1,2,3,4,5")
+    parser.add_argument('--outputs_indexes',help='list of outputs indexes separated by comma (default: \"1,2,3,4,5\")', type=str, default="1,2,3,4,5")
     parser.add_argument('--hyper_fileName', type=str,default="hyper.json")
     
     # MANDATORY PARAMETERS FOR EVALUATION (METRICS COMPUTATION) -> DO NOT MODIFY THESE OPTIONS NAMES
     parser.add_argument('--use_gpu', type=bool, default=True)
     parser.add_argument('--train_fileName', type=str, default="input1.csv")
     parser.add_argument('--Ndecim', type=int,default=1)
+    parser.add_argument('--outputs_prefix', type=str, default='output')
     
     args = parser.parse_args()
     
     save_hyper(args.model_dir,args.hyper_fileName,args)
     
-    names_outputs = ["output" + k for k in args.outputs_indexes.split(",")]
+    names_outputs = [args.outputs_prefix + k for k in args.outputs_indexes.split(",")]
     
     # Get Model Definition 
     try:
@@ -84,7 +90,7 @@ if __name__ == '__main__':
                                Ndecim = args.Ndecim)
     
     # Train
-    model.fit(xs=xs, ys=ys)
+    model.fit(xs=[xs], ys=[ys[:,k] for k in range(len(names_outputs))])
     
     # Save Trained Model
     model.save(args.model_dir)

@@ -20,9 +20,15 @@ import numpy as np
 ## Maintainer: François Caire
 ## Email: francois.caire at skf.com
 ##################################################
-
-
-from sources.utilities.utility_functions import load_data_csv
+try:
+    from utility_functions import load_data_csv
+except:pass
+try:
+    from utilities.utility_functions import load_data_csv
+except:pass
+try:
+    from sources.utilities.utility_functions import load_data_csv
+except:pass
 
 class TestSubmission(unittest.TestCase):
 
@@ -35,9 +41,9 @@ class TestSubmission(unittest.TestCase):
             model = MyModel.create_model()
 
         with self.subTest(name='fit 1'):
-            x_train,y_train = self.xs[:5],[self.ys[k][:5] for k in range(len(self.ys))]
+            x_train,y_train = [self.xs[:5]],[self.ys[:5,k] for k in range(5)]
             model.fit(x_train,y_train)
-            y_pred = model.predict_timeseries(x_train)
+            y_pred = model.predict_timeseries(self.xs[:5])
             self.assertTrue(isinstance(y_pred,np.ndarray))
             self.assertEqual(len(y_pred),5)
 
@@ -60,27 +66,28 @@ class TestSubmission(unittest.TestCase):
         with self.subTest(name='predict all'):
             y2 = model2.predict_timeseries(self.xs[:10])
             self.assertTrue(isinstance(y2, np.ndarray))
-            self.assertEqual(len(y2), 5)
-            self.assertEqual(y2[0].shape, self.xs[:10].shape)
-            self.assertEqual(y2[0].shape, self.ys[0][:10].shape)
+            self.assertEqual(len(y2[0,:]), 5)
+            self.assertEqual(y2[:,0].shape, self.xs[:10].shape)
+            self.assertEqual(y2[:,0].shape, self.ys[:10,0].shape)
 
         with self.subTest(name='compare prediction after predictions'):
             y1 = model.predict_one_timepoint(self.xs[-1])
             y2 = model2.predict_one_timepoint(self.xs[-1])
             self.assertTrue(np.all(y1 == y2))
 
-
-def test(name_model):
-
-    MyModel = import_module('sources.utilities.' + name_model).MyModel
-    unittest.main()
-
-
 if __name__ == '__main__':
     
     try:
         name_model = sys.argv[1]
-        MyModel = import_module('sources.utilities.' + name_model).MyModel
+        try:
+            MyModel = import_module('sources.utilities.' + name_model).MyModel
+        except:pass
+        try:
+            MyModel = import_module('utilities.' + name_model).MyModel
+        except:pass
+        try:
+            MyModel = import_module(name_model).MyModel
+        except:pass
         sys.argv[1:] = []
     except:
         print("Error: your model definition module could not be imported")

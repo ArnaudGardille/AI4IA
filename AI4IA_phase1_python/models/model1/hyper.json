@@ -8,5 +8,6 @@
   "hyper_fileName": "hyper.json",
   "use_gpu": true,
   "train_fileName": "input1.csv",
-  "Ndecim": 5
+  "Ndecim": 5,
+  "outputs_prefix": "output"
 }

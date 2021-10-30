@@ -6,11 +6,12 @@
   "model_dir": "/opt/ml/model",
   "data_dir": "/opt/ml/input/data/training",
   "model_def_file": "my_model2",
-  "epochs": 350000,
+  "epochs": 350,
   "lr": 0.05,
-  "outputs_indexes": "1,2,3",
+  "outputs_indexes": "1",
   "hyper_fileName": "hyper.json",
   "use_gpu": true,
   "train_fileName": "input4.csv",
-  "Ndecim": 5
+  "Ndecim": 5,
+  "outputs_prefix": "output"
 }

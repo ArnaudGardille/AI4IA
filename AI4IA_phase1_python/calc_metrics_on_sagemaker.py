@@ -8,9 +8,14 @@ import json
 from importlib import import_module
 
 try:
+    from utility_functions import load_data_csv
+except:pass
+try:
     from utilities.utility_functions import load_data_csv
-except:
+except:pass
+try:
     from sources.utilities.utility_functions import load_data_csv
+except:pass
     
 ##################################################
 # This script computes all the metrics necessary for the evaluation of
@@ -30,8 +35,7 @@ except:
 def download_from_s3(prefix_out, desc, out_dir='./out'):
     s3 = boto3.resource('s3')
     filename = 'model.tar.gz'
-    metric_file_path = os.path.join(prefix_out, desc['TrainingJobName'],
-                                    'output', filename)
+    metric_file_path = prefix_out + '/' + desc['TrainingJobName'] + '/' + 'output' + '/' + filename
 
     os.makedirs(out_dir, exist_ok=True)
     local_filename = os.path.join(out_dir, filename)
@@ -43,7 +47,7 @@ def download_from_s3(prefix_out, desc, out_dir='./out'):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--max_run', type=float, default=2*60*60) #Max run of the dedicated estimator on AWS instance. Note: the default value will be applied for evaluation 
+    parser.add_argument('--max_run', type=float, default=4*60*60) #Max run of the dedicated estimator on AWS instance. Note: the default value will be applied for evaluation 
     parser.add_argument('--model_def_file', type=str, default='my_model1')
     parser.add_argument('--model_dir', type=str, default='./models/model0')
     parser.add_argument('--data_dir', type=str, default='./data/DataSet_ex')
@@ -52,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('--estimator_hyperParams_fileName', type=str, default='hyper.json')
     parser.add_argument('--model_kwargs_fileName', type=str, default='model_kwargs.json')  
     parser.add_argument('--role',type=str)
-    parser.add_argument('--type_instance',type=str,default='ml.m4.xlarge') #ml.m4.xlarge','ml.p3.2xlarge', #'ml.m4.xlarge',#'ml.p2.xlarge',#'ml.p3.2xlarge',#
+    parser.add_argument('--type_instance',type=str,default='ml.p3.2xlarge') #ml.m4.xlarge','ml.p3.2xlarge', #'ml.m4.xlarge',#'ml.p2.xlarge',#'ml.p3.2xlarge',#
     
     args = parser.parse_args()
     

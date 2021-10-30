@@ -9,9 +9,14 @@ from torch.utils.data import TensorDataset, DataLoader
 
 # IMPORT THE MODEL API FROM WHICH YOUR MODEL MUST INHERITATE : 
 try:
+    from model_api import ModelApi
+except:pass
+try:
     from utilities.model_api import ModelApi
-except:
+except:pass
+try:
     from sources.utilities.model_api import ModelApi
+except:pass
     
 ##################################################
 ## In this script, candidates are asked to implement two things:
@@ -124,8 +129,8 @@ class MyModel(ModelApi):
         
         self.nn_model: GRUModel = GRUModel(**model_kwargs)
 
-    def fit(self, xs: List[np.ndarray], ys: List[List[np.ndarray]], timeout=36000):
-        self.nn_model.fit(xs, ys)
+    def fit(self, xs: List[np.ndarray], ys: List[np.ndarray], timeout=36000):
+        self.nn_model.fit(xs[0], ys)
 
     @classmethod
     def get_sagemaker_estimator_class(self):
@@ -144,7 +149,7 @@ class MyModel(ModelApi):
         return self.nn_model(np.asarray([x])).detach().numpy()
 
     def predict_timeseries(self, x: np.ndarray) -> np.ndarray:
-        return self.nn_model(x).detach().numpy().T
+        return self.nn_model(x).detach().numpy()
 
     def save(self, model_dir: str):
         os.makedirs(model_dir, exist_ok=True)

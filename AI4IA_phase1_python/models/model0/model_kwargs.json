@@ -1,1 +1,1 @@
-{"device": "cuda", "epochs": 350000, "lr": 0.05, "output_size": 3}
+{"device": "cuda", "epochs": 350, "lr": 0.05, "output_size": 1}
