@@ -5,9 +5,9 @@ model_name : LTI
 other_remarks : 
 team_name : MIA
 technology_stack : Scipy
-Aggregated Metrics : 0.10293698616204264
-Average inference time [seconds] : 0.00011122989654541015
+Aggregated Metrics : 0.10283483419230517
+Average inference time [seconds] : 3.3392906188964844e-05
 Normalized MSE : [0.02192065 0.02015805 0.01978169 0.01990866 0.0208065 ]
 Normalized MSE Sum : 0.10257554844939976
 Training set size : 200
-Training time [seconds] : 180.74813795089722
+Training time [seconds] : 93.21421217918396
