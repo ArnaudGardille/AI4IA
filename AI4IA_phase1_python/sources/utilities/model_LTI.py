@@ -59,6 +59,13 @@ def err_multi(x, times, entrees, outputs):
         error += np.mean(err(x,times[k],entrees[k],outputs[k]))
     return error 
 
+
+def err_multi_ponde(x,times, entrees, outputs, poids):
+    error = 0
+    for k in range(len(entrees)) :
+        error += poids[k]*np.mean(err(x,times[k],entrees[k],outputs[k]))
+    return error 
+
 def RMSE(real,prediction):
     """ Computes the mean squared error between truth and prediction """
     rmse = 0
