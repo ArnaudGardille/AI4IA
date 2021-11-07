@@ -45,6 +45,7 @@ class TestSubmission(unittest.TestCase):
             model.fit(x_train,y_train)
             y_pred = model.predict_timeseries(self.xs[:50])
             self.assertTrue(isinstance(y_pred,np.ndarray))
+            print("y_pred", y_pred.shape)
             self.assertEqual(len(y_pred),50)
 
         with self.subTest(name='print description'):
