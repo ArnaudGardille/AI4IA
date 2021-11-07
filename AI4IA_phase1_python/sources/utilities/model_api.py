@@ -87,18 +87,6 @@ class ModelApi:
 
         raise NotImplementedError('model fit() was not implemented')
 
-    def predict_one_timepoint(self, x: np.ndarray) -> np.ndarray:
-        """ produce a prediction: x -> y where x is 1 sample
-        :param x: input vector 1D ndarray with shape (1,-1)
-        :return:  corresponding output vector as 2D np.ndarray 2D ndarray with shape (1,-1)
-
-        Note: calling predict_one_timepoint may change model's state (e.g. to save history).
-        Note: predict_one_timepoint may assume that predict_one_timepoint was called sequentially on all previous timepoints
-        Note: predict_one_timepoint is expected to take no more than 1 second
-        """
-
-        raise NotImplementedError('model predict() was not implemented')
-
     def predict_timeseries(self, x: np.ndarray) -> np.ndarray:
         """ produce a prediction: x -> y where x is the entire time series from the beginning
 

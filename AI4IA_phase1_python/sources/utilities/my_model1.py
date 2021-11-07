@@ -112,6 +112,9 @@ class MyModel(ModelApi):
         self.nn_model: GRUModel = GRUModel(**model_kwargs)
 
     def fit(self, xs: List[np.ndarray], ys: List[np.ndarray], timeout=36000):
+        #print("Fit:")
+        #print("xs: ", xs)
+        #print("ys: ", ys)
         self.nn_model.fit(xs[0], ys)
 
     @classmethod
@@ -126,9 +129,6 @@ class MyModel(ModelApi):
         framework_version = '1.8.0'
         
         return PyTorch,framework_version
-
-    def predict_one_timepoint(self, x: float) -> np.ndarray:
-        return self.nn_model(np.asarray([x])).detach().numpy()
 
     def predict_timeseries(self, x: np.ndarray) -> np.ndarray:
         return self.nn_model(x).detach().numpy()

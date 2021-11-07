@@ -105,17 +105,11 @@ if __name__ == '__main__':
     _ , x_test , y_test = load_data_csv(data_path=os.path.join(args.data_dir,args.test_fileName))
 
     # Inference Time computation :
-    times = []
-    yp    = []
-    for sample in x_test:
-        ts = time.time()
-        y_pred = model.predict_one_timepoint(sample)
-        times.append(time.time() - ts)
-        yp.append(y_pred)
+    ts = time.time()
+    y_pred = model.predict_timeseries(x_test)
+    inf_time =(time.time() - ts)
 
-    metric_max_inference_time   = np.max(times)
-    metric_mean_inference_time  = np.mean(times)
-    metric_total_inference_time = np.sum(times)
+    metric_mean_inference_time  = inf_time/len(x_test)
 
     # Normalized Error Computation : 
     y_pred = model.predict_timeseries(x_test)
@@ -134,15 +128,12 @@ if __name__ == '__main__':
     
     aggregated_performance_indicator = metric_train_time/3600/1e3 + \
                                        metric_mean_inference_time + \
-                                       metric_max_inference_time  + \
                                        metric_normalized_mse_sum  + \
                                        len(x_train)/1e6
 
     metrics_info = { 
                      'Training set size': len(x_train), 
                      'Training time [seconds]' : metric_train_time,
-                     'Entire series inference time [seconds]' : metric_total_inference_time,
-                     'Maximal inference time [seconds]' : metric_max_inference_time,
                      'Average inference time [seconds]' : metric_mean_inference_time,
                      'Normalized MSE' : metric_normalized_mse,
                      'Normalized MSE Sum' : metric_normalized_mse_sum,

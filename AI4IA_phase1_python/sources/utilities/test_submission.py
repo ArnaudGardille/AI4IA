@@ -41,11 +41,11 @@ class TestSubmission(unittest.TestCase):
             model = MyModel.create_model()
 
         with self.subTest(name='fit 1'):
-            x_train,y_train = [self.xs[:5]],[self.ys[:5,k] for k in range(5)]
+            x_train,y_train = [self.xs[:50]],[self.ys[:50,k] for k in range(5)]
             model.fit(x_train,y_train)
-            y_pred = model.predict_timeseries(self.xs[:5])
+            y_pred = model.predict_timeseries(self.xs[:50])
             self.assertTrue(isinstance(y_pred,np.ndarray))
-            self.assertEqual(len(y_pred),5)
+            self.assertEqual(len(y_pred),50)
 
         with self.subTest(name='print description'):
             description = model.description
@@ -58,21 +58,16 @@ class TestSubmission(unittest.TestCase):
             model2 = model.load('./tmp/')
             self.assertEqual(model.description, model2.description)
 
-        with self.subTest(name='predict one'):
-            y1 = model.predict_one_timepoint(self.xs[0])
-            self.assertTrue(isinstance(y1,np.ndarray))
-            self.assertEqual(len(y1[0]), 5)
-
         with self.subTest(name='predict all'):
-            y2 = model2.predict_timeseries(self.xs[:10])
+            y2 = model2.predict_timeseries(self.xs[:50])
             self.assertTrue(isinstance(y2, np.ndarray))
             self.assertEqual(len(y2[0,:]), 5)
-            self.assertEqual(y2[:,0].shape, self.xs[:10].shape)
-            self.assertEqual(y2[:,0].shape, self.ys[:10,0].shape)
+            self.assertEqual(y2[:,0].shape, self.xs[:50].shape)
+            self.assertEqual(y2[:,0].shape, self.ys[:50,0].shape)
 
         with self.subTest(name='compare prediction after predictions'):
-            y1 = model.predict_one_timepoint(self.xs[-1])
-            y2 = model2.predict_one_timepoint(self.xs[-1])
+            y1 = model.predict_timeseries(self.xs[-50:-1])
+            y2 = model2.predict_timeseries(self.xs[-50:-1])
             self.assertTrue(np.all(y1 == y2))
 
 if __name__ == '__main__':
