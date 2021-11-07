@@ -78,7 +78,7 @@ def CalcOffsetShrink(x, y):
         try:
             shrink = (y[i][-1]-offset[i])/x[-1]
         except:
-            print("erreur calcul shrink")
+            #print("erreur calcul shrink")
             shrink = 1
 
         shrinks.append(shrink)
@@ -90,7 +90,7 @@ def removeOffsetShrink(ys, offsets, shrinks):
     ys = np.array(ys)
     ys_corrige = copy.deepcopy(ys)
 
-    print(ys.shape)
+    #print(ys.shape)
 
         
     for i in range(ys.shape[0]):
@@ -105,7 +105,7 @@ def addOffsetShrink(ys, offsets, shrinks):
     ys = np.array(ys)
     ys_corrige = copy.deepcopy(ys)
 
-    print(ys.shape)
+    #print(ys.shape)
 
         
     for i in range(ys.shape[0]):
@@ -142,8 +142,8 @@ class MyModel(ModelApi):
         """
         #inputs_train = xs #['input0','input1','input3','input5']
         #inputs_test = ys #['input2','input4','input6']
-        print("xs", len(xs))
-        print("ys", len(ys))
+        #print("xs", len(xs))
+        #print("ys", len(ys))
 
 
         x_train = np.array(xs[0])
@@ -230,7 +230,7 @@ class MyModel(ModelApi):
         model = cls() 
 
         path = os.path.join(model_dir, "degre.npy")
-        print(path)
+        #print(path)
         model.degre = np.load(path)
 
         path = os.path.join(model_dir, "coeffs.npy")
