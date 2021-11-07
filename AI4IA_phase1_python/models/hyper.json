@@ -1,7 +1,7 @@
 {
   "model_dir": "./models",
   "data_dir": "data/DataSet_ex/",
-  "model_def_file": "my_model2",
+  "model_def_file": "model_LTI",
   "epochs": 40,
   "lr": 0.05,
   "outputs_indexes": "1,2",
