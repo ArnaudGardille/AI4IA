@@ -5,7 +5,6 @@ from typing import List
 import copy
 import numpy as np
 import time
-import pandas as pd
 
 from scipy import signal as sg
 from scipy import integrate
@@ -33,92 +32,8 @@ except:pass
 #
 # See example notebook for an example of how to use this script
 ##################################################
-## Author: François Caire
-## Maintainer: François Caire
-## Email: francois.caire at skf.com
+## Author: MIA team
 ##################################################
-
-"""
-BELOW IS THE IMPLEMENTATION OF YOUR MODEL
-
-This example (GRUModel) implements a GRU class model inherited from a Pytorch model class.
-Your solution can be any, the interface with higher level scripts needed (sagemaker_api and calc_metrics) 
-as well as test_submission, is done in the class definition below (cf. MyModel def).
-
-To conclude: the only constraint you have here is that your model is instanciated inside the MyModel class definition
-where you have to implement all the methods required for the higher levels tools we need (and that you also need !) 
-to evaluate your solution in terms of precision, inference and training times etc...
-"""
-class LTIModel():
-    def __init__(self, input_size=1, hidden_layer_size=85, nlayers=2,
-                 device='cpu', lr=0.001, seed=0, epochs=25, output_size=5):
-        super().__init__()
-        self.hidden_layer_size = hidden_layer_size
-        self.nlayers = nlayers
-        self.output_size = output_size
-        self.gru = nn.GRU(input_size, self.hidden_layer_size, self.nlayers).to(device)
-        self.hidden = torch.zeros(nlayers, 1, self.hidden_layer_size).to(device)
-        self.linear = nn.Linear(self.hidden_layer_size, output_size).to(device)
-        self.relu = nn.ReLU()
-        self = self.to(device)
-        self.device = device
-        self.seed = seed
-        self.lr = lr
-        self.epochs = epochs
-        
-    def forward(self, input_vec):
-        Ni = input_vec.shape[0]
-        if isinstance(input_vec,np.ndarray):
-            input_vec = torch.from_numpy(input_vec).float().to(self.device)
-
-        output = torch.zeros((Ni,self.output_size)).to(self.device)
-        h = self.hidden
-    
-        gru_out, _ = self.gru(input_vec.view(Ni,1,-1), h)
-        predictions = self.linear(self.relu(gru_out))
-        output = predictions.view(Ni,self.output_size)
-        
-        return output
-
-    def fit(self, xs, ys):
-        use_cuda = True if self.device == 'cuda' else False
-
-        # set the seed for generating random numbers
-        #torch.manual_seed(self.seed)
-        #if use_cuda:55f3bogk
-         #   torch.cuda.manual_seed(self.seed)
-            
-        self.output_shape = (xs.shape[0],len(ys))
-        
-        x = torch.tensor(xs,dtype=float)
-        y = torch.tensor(ys,dtype=float).view(x.shape[0],-1)        
-
-        seq_data = TensorDataset(x,y)
-        batch_size = len(x)//5
-        data_loader = DataLoader(seq_data, shuffle=False, batch_size=batch_size, drop_last=True)
-        train_seq = [(i.clone().float().to(self.device), o.clone().float().to(self.device)) for i, o in data_loader]
-
-        #optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
-        optimizer = torch.optim.SGD(self.parameters(), lr=self.lr, momentum=0.9)
-        loss_function = nn.MSELoss()
-
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min',
-                                                               factor=0.95, patience=2, threshold=1e-3,
-                                                               threshold_mode='rel', cooldown=0, min_lr=1e-4,
-                                                               eps=1e-05, verbose=False)
-        
-        for i in range(self.epochs):
-            self.train()
-            # torch.cuda.empty_cache()
-            for input, target in train_seq:
-                optimizer.zero_grad()
-                y_pred = self(input)
-                single_loss = loss_function(y_pred, target)
-                single_loss.backward()
-                optimizer.step()
-                scheduler.step(single_loss)
-            
-            if i%(self.epochs//25) == 0: print("it. %i / %i - loss = %.8f"%(i,self.epochs,single_loss))
 
 def pred(x, t_e, entree):
     """
