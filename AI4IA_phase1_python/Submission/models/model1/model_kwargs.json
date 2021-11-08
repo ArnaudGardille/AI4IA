@@ -1,0 +1,1 @@
+{"device": "cpu", "epochs": 40, "lr": 0.05, "output_size": 5}

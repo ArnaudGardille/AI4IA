@@ -1,0 +1,10 @@
+numpy==1.19.5
+torch==1.9.1
+pandas==1.1.1
+boto3==1.17.11
+sagemaker==2.59.7
+scikit_learn==1.0
+matplotlib
+scipy
+tqdm
+sagemaker
