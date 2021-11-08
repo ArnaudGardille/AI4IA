@@ -1,6 +1,4 @@
-Ce répertoire est fourni exclusivement aux candidats de la 1ère édition du challenge AI4IA.
-
-Il est organisé de la manière suivante:
+Ce répertoire est organisé de la manière suivante:
 
 Fichiers d'information:
 |--Annexes mathématiques.pdf -> Quelques considérations Mathématiques	qui ont guidées notre reflexion au cours du projet 
