@@ -24,7 +24,3 @@ Les fichiers du challenge:
         |--test_submission.py -> définition d'une classe de tests unitaires (et lancement) afin de vérifier que la définition de votre modèle est conforme à l'attendu. Il est également vivement conseillé de vérifier, avant toute soumission, que la définition du modèle permet le lancement en local ou sur des machines Amazon des scripts de calcul des métriques décrits ci-dessus
         |--utility_functions.py -> des méthodes utiles pour le chargement de données etc... pourra être enrichi
         
-Les organisateurs se tiennent à votre disposition pour toute question technique ou tout problème rencontré dans l'utilisation de ces scripts: vous pouvez à tout moment transmettre un message aux organisateurs via la plateforme agorize. Le support technique tâchera de vous répondre dans les meilleurs délais.
-D'autre part, des versions mises à jour des scripts pourront éventuellement vous être transmis en cours de challenge par les organisateurs.
-
-
