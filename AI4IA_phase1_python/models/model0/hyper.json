@@ -5,7 +5,7 @@
   "current_host": "algo-1",
   "model_dir": "/opt/ml/model",
   "data_dir": "/opt/ml/input/data/training",
-  "model_def_file": "my_model2",
+  "model_def_file": "my_model1",
   "epochs": 350,
   "lr": 0.05,
   "outputs_indexes": "1",
