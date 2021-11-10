@@ -312,11 +312,11 @@ class MyModel(ModelApi):
                 res = least_squares(err, x0, bounds=(-3, 3), args=(time_train,x_train,y_train), verbose=verbose, ftol=1e-15, gtol=1e-15, xtol = 1e-15, max_nfev = self.epochs_1)
                 self.coeffs[Output][Input] = res.x
                 self.approx[Input][Output+"_approx"] = pred(res.x,time_train,x_train)
+                self.approx[Input][Output+"_approx"] = self.approx[Input][Output+"_approx"]*self.shrinks[Output]+self.offsets[Output]
                 Compteur += 1
                 if verbose:
                     print("Avancement calcul des fonctions de transfert : " + str(round(Compteur/N_total*100)) +"%")
                     
-        self.approx = addOffsetShrink(self.approx, self.offsets, self.shrinks)
                        
         ##Calcul params_inputs
         params_inputs = calcul_params_input(dic_train)
