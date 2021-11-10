@@ -1,8 +1,15 @@
-Ce répertoire est fourni exclusivement aux candidats de la 1ère édition du challenge AI4IA.
+Ce répertoire est organisé de la manière suivante:
 
-Il est organisé de la manière suivante:
-.
-|--example_AI4IA_phase1.ipynb -> un notebook d'exemple illustrant l'attendu et présentant les différents outils mis à disposition
+Fichiers d'information:
+|--Annexes mathématiques.pdf -> Quelques considérations Mathématiques	qui ont guidées notre reflexion au cours du projet 
+|--méthodologie utilisée par l’équipe MIA pour le challenge AI4IA 
+
+Notebooks 
+|--Presentation_equipe_MIA.ipynb -> Notre script scientifique expliquant notre modèle
+|--example_AI4IA_phase1.ipynb -> Reprise du notebook d'exemple illustrant l'utilisation de notre modèle
+|--Evolution des stratégies.ipynb -> Un notebook expliquant l'évolution des stratégies
+
+Les fichiers du challenge:
 |--requirements.txt -> un fichier permettant l'installation des modules nécessaires à l'exécution du notebook d'exemple (pip3 install -r requirements.txt)
 |--calc_metric_on_sagemaker.py -> script permettant de lancer l'évaluation des performances d'un modèle sur une instance AWS
 |--data -> le répertoire contenant les datasets 
@@ -17,7 +24,3 @@ Il est organisé de la manière suivante:
         |--test_submission.py -> définition d'une classe de tests unitaires (et lancement) afin de vérifier que la définition de votre modèle est conforme à l'attendu. Il est également vivement conseillé de vérifier, avant toute soumission, que la définition du modèle permet le lancement en local ou sur des machines Amazon des scripts de calcul des métriques décrits ci-dessus
         |--utility_functions.py -> des méthodes utiles pour le chargement de données etc... pourra être enrichi
         
-Les organisateurs se tiennent à votre disposition pour toute question technique ou tout problème rencontré dans l'utilisation de ces scripts: vous pouvez à tout moment transmettre un message aux organisateurs via la plateforme agorize. Le support technique tâchera de vous répondre dans les meilleurs délais.
-D'autre part, des versions mises à jour des scripts pourront éventuellement vous être transmis en cours de challenge par les organisateurs.
-
-

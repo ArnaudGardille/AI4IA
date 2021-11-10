@@ -134,7 +134,8 @@ These methods are used in higher levels scripts such as:
 """
 class MyModel(ModelApi):
 
-    def __init__(self, degre=5, nbOutputs=5,  **model_kwargs):
+    def __init__(self, degre=5, nbOutputs=5, **model_kwargs):
+        print("initialising")
         self.model_kwargs = model_kwargs
         self.degre = degre
         self.coeffs = np.ones(2*degre)
@@ -151,6 +152,7 @@ class MyModel(ModelApi):
         #inputs_test = ys #['input2','input4','input6']
         #print("xs", len(xs))
         #print("ys", len(ys))
+        print("fitting")
 
 
         x_train = np.array(xs[0])
@@ -193,11 +195,7 @@ class MyModel(ModelApi):
         return PyTorch,framework_version
 
     def predict_timeseries(self, x: np.ndarray) -> np.ndarray:
-        #print(x)
-        #Sorties_v2 = copy.deepcopy(d)
-
-        #for k in range(x.shape[0]):
-        #print("shape: ",x[k].shape)
+        print("predicting serie")
         outputs = np.zeros((self.nbOutputs, x.shape[-1]))
         Time = np.arange(x.size)*0.001
         for i in range(self.nbOutputs):
@@ -210,6 +208,7 @@ class MyModel(ModelApi):
         #return self.nn_model(x).detach().numpy()
 
     def save(self, model_dir: str):
+        print("saving")
         os.makedirs(model_dir, exist_ok=True)
         filenames = ["degre", "coeffs", "nbOutputs", "shrinks", "offsets"]
     
@@ -231,6 +230,7 @@ class MyModel(ModelApi):
 
     @classmethod
     def load(cls, model_dir: str):
+        print("loading")
         os.makedirs(model_dir, exist_ok=True)
 
 
@@ -256,6 +256,7 @@ class MyModel(ModelApi):
 
     @classmethod
     def create_model(cls, gpu_available: bool = False, **kwargs):
+        print("creating")
         return cls(**kwargs)
 
     @property
@@ -275,3 +276,4 @@ class MyModel(ModelApi):
                     technology_stack=technology_stack,
                     other_remarks=other_remarks,
                     affiliation=affiliation)
+

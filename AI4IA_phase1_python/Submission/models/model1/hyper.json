@@ -1,0 +1,13 @@
+{
+  "model_dir": "./models/model1",
+  "data_dir": "data/DataSet_ex/",
+  "model_def_file": "my_model1",
+  "epochs": 40,
+  "lr": 0.05,
+  "outputs_indexes": "1,2,3,4,5",
+  "hyper_fileName": "hyper.json",
+  "use_gpu": true,
+  "train_fileName": "input1.csv",
+  "Ndecim": 5,
+  "outputs_prefix": "output"
+}

@@ -7,3 +7,4 @@ scikit_learn==1.0
 matplotlib
 scipy
 tqdm
+sagemaker
