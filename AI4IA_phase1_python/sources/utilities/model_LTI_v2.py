@@ -4,7 +4,7 @@ Created on Wed Nov 10 15:00:52 2021
 
 @author: aforv
 """
-
+import pickle
 import os
 import json
 from re import S
@@ -256,7 +256,7 @@ class MyModel(ModelApi):
         if len(xs) == 1 :
             self.nbOutputs = len(ys)
         else :
-            self.nbOutputs = len(ys[0])
+            self.nbOutputs = len(np.transpose(ys[0]))
      
         output_names = ["Output"+str(k) for k in range(1,self.nbOutputs+1)]
         self.output_names = output_names
@@ -276,10 +276,10 @@ class MyModel(ModelApi):
                 if len(xs) == 1 :
                     dic_train[input_names[i]][output_names[j]] = np.transpose(ys)[:,j]
                 else:
-                    dic_train[input_names[i]][output_names[j]] = np.transpose(ys[i])[:,j]
+                    dic_train[input_names[i]][output_names[j]] = np.transpose(ys[i])[j]
                           
             #dic_train[input_names] = pd.DataFrame(dic_train[input_names])              
-        self.dic_train = dic_train
+        self.dic_train = copy.deepcopy(dic_train)
 
         Compteur = 0               
         
@@ -320,6 +320,7 @@ class MyModel(ModelApi):
                        
         ##Calcul params_inputs
         params_inputs = calcul_params_input(dic_train)
+
         self.params_inputs_train = params_inputs
         
         
@@ -355,7 +356,10 @@ class MyModel(ModelApi):
         return PyTorch,framework_version
 
     def predict_timeseries(self, x) : ##-> {output_name : np.array()}
-                     
+        #self.params_inputs_train = dict(self.params_inputs_train)
+        #print("truc: ", self.params_inputs_train)
+        #print("type: ", type(self.params_inputs_train))
+        
         Sortie = {'input':{}}
         for name in self.output_names :
             Sortie['input'][name+"_approx"] = np.zeros(len(x))
@@ -397,31 +401,43 @@ class MyModel(ModelApi):
         np.save(path, self.degre)
 
         path = os.path.join(model_dir, "coeffs") ##dic
-        np.save(path, self.coeffs)
+        a_file = open(path, "wb")
+        pickle.dump(self.coeffs, a_file)
+        a_file.close()  
 
         path = os.path.join(model_dir, "nbOutputs")
         np.save(path, self.nbOutputs)
 
         path = os.path.join(model_dir, "shrinks") ##dic
-        np.save(path, self.shrinks)
+        a_file = open(path, "wb")
+        pickle.dump(self.shrinks, a_file)
+        a_file.close()  
 
         path = os.path.join(model_dir, "offsets") ##dic
-        np.save(path, self.offsets)
+        a_file = open(path, "wb")
+        pickle.dump(self.offsets, a_file)
+        a_file.close()  
 
         path = os.path.join(model_dir, "poids")
         np.save(path, self.poids)        
 
         path = os.path.join(model_dir, "params_inputs_train") ##dic
-        np.save(path, self.params_inputs_train)         
+        a_file = open(path, "wb")
+        pickle.dump(self.params_inputs_train, a_file)
+        a_file.close()       
 
         path = os.path.join(model_dir, "approx") ##dic
-        np.save(path, self.approx)         
+        a_file = open(path, "wb")
+        pickle.dump(self.approx, a_file)
+        a_file.close()           
 
         path = os.path.join(model_dir, "output_names")
         np.save(path, self.output_names)         
                 
-        path = os.path.join(model_dir, "dic_train")
-        np.save(path, self.dic_train)          
+        path = os.path.join(model_dir, "dic_train") ##dic
+        a_file = open(path, "wb")
+        pickle.dump(self.dic_train, a_file)
+        a_file.close()            
         
     @classmethod
     def load(cls, model_dir: str):
@@ -429,34 +445,46 @@ class MyModel(ModelApi):
         model = cls() 
 
         path = os.path.join(model_dir, "degre.npy")
-        model.degre = np.load(path)
+        model.degre = np.load(path, allow_pickle=True)
 
-        path = os.path.join(model_dir, "coeffs.npy")
-        model.coeffs = np.load(path)
+        path = os.path.join(model_dir, "coeffs")
+        a_file = open(path, "rb")
+        model.coeffs = pickle.load(a_file)
+        a_file.close()
 
         path = os.path.join(model_dir, "nbOutputs.npy")
-        model.nbOutputs = np.load(path)
+        model.nbOutputs = np.load(path, allow_pickle=True)
 
-        path = os.path.join(model_dir, "shrinks.npy")
-        model.shrinks = np.load(path)
+        path = os.path.join(model_dir, "shrinks")
+        a_file = open(path, "rb")
+        model.shrinks = pickle.load(a_file)
+        a_file.close()
 
-        path = os.path.join(model_dir, "offsets.npy")
-        model.offsets = np.load(path)
+        path = os.path.join(model_dir, "offsets")
+        a_file = open(path, "rb")
+        model.offsets = pickle.load(a_file)
+        a_file.close()
 
         path = os.path.join(model_dir, "poids.npy")
-        model.poids = np.load(path)        
+        model.poids = np.load(path, allow_pickle=True)        
 
-        path = os.path.join(model_dir, "params_inputs_train.npy")
-        model.params_inputs_train = np.load(path)         
+        path = os.path.join(model_dir, "params_inputs_train")
+        a_file = open(path, "rb")
+        model.params_inputs_train = pickle.load(a_file)    
+        a_file.close()  
 
-        path = os.path.join(model_dir, "approx.npy")
-        model.approx = np.load(path)        
+        path = os.path.join(model_dir, "approx")
+        a_file = open(path, "rb")
+        model.approx = pickle.load(a_file)    
+        a_file.close()
 
         path = os.path.join(model_dir, "output_names.npy")
-        model.output_names = np.load(path)         
+        model.output_names = np.load(path, allow_pickle=True)         
 
-        path = os.path.join(model_dir, "dic_train.npy")
-        model.dic_train = np.load(path)           
+        path = os.path.join(model_dir, "dic_train")
+        a_file = open(path, "rb")
+        model.dic_train = pickle.load(a_file)  
+        a_file.close()         
         
         return model
 
