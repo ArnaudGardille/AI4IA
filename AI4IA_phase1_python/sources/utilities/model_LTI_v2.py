@@ -64,8 +64,8 @@ def RMSE(real,prediction):
     return rmse/len(real)
 
 def CalcOffsetShrink(output_names,dic):
-    ##Calcul des shrink (positif ou négatif) et des offset de chaque output
-
+    """ Calcul des shrink (positif ou négatif) et des offset de chaque output
+    """
     offsets = {}
     shrinks = {}
     
@@ -108,6 +108,9 @@ def addOffsetShrink(dic, offsets, shrinks):
 
 
 def calcul_lipschitz(x):
+    """
+    
+    """
     max_L = 1
     L = 1
     Time_step = 0.001
@@ -120,6 +123,9 @@ def calcul_lipschitz(x):
 
 
 def calcul_changements_signe(x):
+    """
+    
+    """
     compteur = 0
     
     for k in range(2,len(x)):
@@ -130,6 +136,9 @@ def calcul_changements_signe(x):
 
 
 def calcul_params_input(dic):
+    """
+    
+    """
     params_inputs = {}
     moyenne_lip = 0
     moyenne_chgmt_signe = 0
@@ -153,6 +162,9 @@ def calcul_params_input(dic):
 
 
 def similitude_generale(poids,param1,param2):
+    """
+    
+    """
     param_1 = np.array(param1)
     param_2 = np.array(param2)
     
@@ -164,7 +176,9 @@ def similitude_generale(poids,param1,param2):
 
 
 def calcul_sorties_approx(poids,inputs_names,output_names,coeffs,params_inputs,d,offsets,shrinks):
+    """
     
+    """
     Sorties = {}
     
     for key in d.keys():
@@ -201,7 +215,9 @@ def calcul_sorties_approx(poids,inputs_names,output_names,coeffs,params_inputs,d
     return Sorties
                        
 def erreur_moyenne_simi(poids,inputs_names,output_names,coeffs,params_inputs,d,offsets,shrinks):                       
+    """
     
+    """
     Sorties = calcul_sorties_approx(poids,inputs_names,output_names,coeffs,params_inputs,d,offsets,shrinks)
                        
     mean_rmse = 0
@@ -450,7 +466,7 @@ class MyModel(ModelApi):
         affiliation = 'Université Paris-Saclay'
         description = 'This is a simple LTI model that supports 1 input and 5 outputs'
         technology_stack = 'Scipy'
-        other_remarks = ''
+        other_remarks = 'Version 3'
 
         return dict(team_name=team_name,
                     email=email,
