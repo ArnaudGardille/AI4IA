@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 10 15:00:52 2021
+
+@author: aforv
+"""
+
 import os
 import json
 from re import S
@@ -90,7 +97,7 @@ def removeOffsetShrink(dic, offsets, shrinks):
 
 
     for key in dic_corrige.keys():
-        for name in offsets.keys():
+        for name in list(dic_corrige[key].keys())[2:]:
             dic_corrige[key][name] = dic[key][name] - offsets[name] 
             dic_corrige[key][name] = 1/shrinks[name]*dic_corrige[key][name]
 
@@ -100,7 +107,7 @@ def addOffsetShrink(dic, offsets, shrinks):
     ###Traitement des output
     dic_corrige = copy.deepcopy(dic)
     for key in dic_corrige.keys():
-        for name in offsets.keys():
+        for name in list(dic_corrige[key].keys())[2:]:
             dic_corrige[key][name+str('_approx')] = shrinks[name]*dic_corrige[key][name+str('_approx')]
             dic_corrige[key][name+str('_approx')] = dic_corrige[key][name+str('_approx')]+offsets[name]
         
@@ -242,22 +249,37 @@ class MyModel(ModelApi):
         self.dic_train = {}
         
                        
-    def fit(self, dic_train, timeout=36000, verbose=False):
-        """
-        Works with only one input
-        """
-        #inputs_train = xs #['input0','input1','input3','input5']
-        #inputs_test = ys #['input2','input4','input6']
-        #print("xs", len(xs))
-        #print("ys", len(ys))
+    def fit(self, xs: List[np.ndarray], ys: List[np.ndarray], timeout=36000, verbose=False):  ##prend en entrée un ou plusieurs inputs et leur réponse
         
         print("--- Fit started ---")
         
-        self.dic_train = copy.deepcopy(dic_train)
-        
+        if len(xs) == 1 :
+            self.nbOutputs = len(ys)
+        else :
+            self.nbOutputs = len(ys[0])
+     
         output_names = ["Output"+str(k) for k in range(1,self.nbOutputs+1)]
         self.output_names = output_names
-        input_names = list(dic_train.keys())
+        
+        input_names = ["input"+str(k) for k in range(len(xs))]
+        
+        
+        ##On met les données sous la forme d'un dictionnaire, plus simple pour la suite
+        dic_train = {}
+        for i in range(len(input_names)) :
+            n = len(xs[i])
+            time = np.arange(n)*0.001
+            dic_train[input_names[i]] = {}
+            dic_train[input_names[i]]['Time'] = time
+            dic_train[input_names[i]]['Input'] = xs[i]
+            for j in range(len(output_names)) : 
+                if len(xs) == 1 :
+                    dic_train[input_names[i]][output_names[j]] = np.transpose(ys)[:,j]
+                else:
+                    dic_train[input_names[i]][output_names[j]] = np.transpose(ys[i])[:,j]
+                          
+            #dic_train[input_names] = pd.DataFrame(dic_train[input_names])              
+        self.dic_train = dic_train
 
         Compteur = 0               
         
@@ -446,9 +468,9 @@ class MyModel(ModelApi):
     def description(self):
         team_name = 'MIA'
         email = 'arnaud.gardille@gmail.com'
-        model_name = 'LTI'
+        model_name = 'LTI_v2'
         affiliation = 'Université Paris-Saclay'
-        description = 'This is a simple LTI model that supports 1 input and 5 outputs'
+        description = 'This is a simple LTI model that supports 1 or more inputs and 1 to 5 corresponding outputs'
         technology_stack = 'Scipy'
         other_remarks = ''
 
